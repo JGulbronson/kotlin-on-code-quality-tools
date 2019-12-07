@@ -12,7 +12,10 @@ class NoInternalImportRule : Rule("no-internal-import") {
       val importDirective = node.psi as KtImportDirective
       val path = importDirective.importPath?.pathStr
       if (path?.contains("internal") == true) {
-        emit(node.startOffset, "Importing '$path' which is an internal import.", false)
+        emit(node.startOffset, "Importing '$path' which is an internal import.", true)
+        if (autoCorrect) {
+          importDirective.delete()
+        }
       }
     }
   }
